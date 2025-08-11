@@ -1,0 +1,51 @@
+version: "3"
+services:
+  pulsar:
+    image: apachepulsar/pulsar:latest
+    command: bin/pulsar standalone
+    hostname: pulsar
+    container_name: pulsar
+    ports:
+      - "8080:8080"
+      - "6650:6650"
+    environment:
+      - PULSAR_PREFIX_brokerDeleteInactiveTopicsEnabled="false"
+      - PULSAR_PREFIX_brokerDeleteInactiveTopicsFrequencySeconds="0"
+    restart: always
+    volumes:
+      - "./data:/pulsar/data"
+  dashboard:
+    image: apachepulsar/pulsar-manager:latest
+    ports:
+      - "9527:9527"
+      - "7750:7750"
+    container_name: dashboard
+    depends_on:
+      - pulsar
+    links:
+      - pulsar
+    environment:
+      SPRING_CONFIGURATION_FILE: /pulsar-manager/pulsar-manager/application.properties
+  golang-consumer:
+    image: danieldiasjava/go-pulsar-consume-app:latest
+    container_name: golang-consumer
+    depends_on:
+      - pulsar
+      - java-producer
+    links:
+      - pulsar
+    environment:
+      - PULSAR_URL=pulsar://pulsar:6650
+    restart: always
+  java-producer:
+    image: danieldiasjava/java-pulsar-producer-app:latest
+    container_name: java-producer
+    ports:
+      - "8082:8082"
+    depends_on:
+      - pulsar
+    links:
+      - pulsar
+    environment:
+       - PULSAR_SERVICE_URL=pulsar://pulsar:6650
+    restart: always

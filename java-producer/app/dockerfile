@@ -1,0 +1,12 @@
+FROM eclipse-temurin:23-jre-alpine
+
+WORKDIR /app
+
+COPY target/apache-pulsar-java-producer-exec.jar app.jar
+
+EXPOSE 8082
+
+ENV CATALINA_OPTS=""
+ENV JAVA_OPTS=""
+
+CMD ["sh", "-c", "java $JAVA_OPTS $CATALINA_OPTS -jar app.jar"]

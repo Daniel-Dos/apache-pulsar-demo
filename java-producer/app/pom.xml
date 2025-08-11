@@ -1,0 +1,123 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.medium.danieldiasjava</groupId>
+    <artifactId>apache-pulsar-java-producer</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
+
+    <name>apache-pulsar-java-producer</name>
+
+    <properties>
+        <java.version>23</java.version>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <failOnMissingWebXml>false</failOnMissingWebXml>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <tomee.version>10.0.1</tomee.version>
+        <jakarta.jakartaee-web-api.version>10.0.0</jakarta.jakartaee-web-api.version>
+        <microprofile.version>6.0</microprofile.version>
+        <pulsar.version>4.0.6</pulsar.version>
+        <logback.version>1.5.16</logback.version>
+        <slf4j.version>2.0.16</slf4j.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>jakarta.platform</groupId>
+            <artifactId>jakarta.jakartaee-web-api</artifactId>
+            <version>${jakarta.jakartaee-web-api.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.eclipse.microprofile</groupId>
+            <artifactId>microprofile</artifactId>
+            <version>${microprofile.version}</version>
+            <type>pom</type>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.pulsar</groupId>
+            <artifactId>pulsar-client</artifactId>
+            <version>${pulsar.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/ch.qos.logback.contrib/logback-json-classic -->
+        <dependency>
+            <groupId>ch.qos.logback.contrib</groupId>
+            <artifactId>logback-json-classic</artifactId>
+            <version>0.1.5</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback.contrib</groupId>
+            <artifactId>logback-jackson</artifactId>
+            <version>0.1.5</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>apache-pulsar-java-producer</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.3.1</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.tomee.maven</groupId>
+                <artifactId>tomee-maven-plugin</artifactId>
+                <version>${tomee.version}</version>
+                <executions>
+                    <execution>
+                        <id>executable-jar</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <context>ROOT</context>
+                    <tomeeHttpPort>8082</tomeeHttpPort>
+                    <tomeeShutdownPort>8005</tomeeShutdownPort>
+                    <tomeeAjpPort>8009</tomeeAjpPort>
+                    <tomeeVersion>${tomee.version}</tomeeVersion>
+                    <tomeeArtifactId>apache-tomee</tomeeArtifactId>
+                    <tomeeGroupId>org.apache.tomee</tomeeGroupId>
+                    <tomeeClassifier>microprofile</tomeeClassifier>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
