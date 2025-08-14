@@ -28,7 +28,6 @@ func ConsumerMessages(client pulsar.Client) {
 		msg, err := consumer.Receive(context.Background())
 		if err != nil {
 			log.Printf("Could not receive message: %v", err)
-			//time.Sleep(1 * time.Second) // Evita loop rápido em caso de erro
 			continue
 		}
 
